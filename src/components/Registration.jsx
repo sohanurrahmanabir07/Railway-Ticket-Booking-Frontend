@@ -7,6 +7,7 @@ import { loginUser, logoutUser, addUser } from '../components/redux'
 import '../css/login.css'
 import loading_gif from '../assets/logo/croped.gif'
 import axios from 'axios'
+import api from './api';
 
 export default function Registration() {
     const dispatch = useDispatch()
@@ -81,7 +82,7 @@ export default function Registration() {
                 password: passwordd
 
             }
-            await axios.post('http://127.0.0.1:8000/api/add_passenger', updateUser)
+            await api.post('/add_passenger', updateUser)
                 .then((res) => {
                     console.log(res)
                     toast.success('Registered successfully')

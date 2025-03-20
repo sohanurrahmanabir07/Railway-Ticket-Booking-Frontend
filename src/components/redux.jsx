@@ -73,8 +73,8 @@ const variable =
         },
         clear_selected:(state,action)=>{
             const key=action.payload
-            const new_selected=state.selected.filter((item)=> !(item[0]==key[0] && item[2]==key[2]) )
-            const new_seat_details=state.seat_details.filter((item)=> !(item[0]==key[0] && item[2]==key[2]))
+            const new_selected=state.selected?.filter((item)=> !(item[0]==key[0] && item[2]==key[2]) )
+            const new_seat_details=state.seat_details?.filter((item)=> !(item[0]==key[0] && item[2]==key[2]))
             state.selected=new_selected
             state.seat_details=new_seat_details
             state.amount-=parseInt(key[3])
@@ -96,6 +96,13 @@ const variable =
         },
         clear_refresh_token:(state,action)=>{
             state.refresh_token=null
+        },
+        remove_after_purchasing_ticket:(state,action)=>{
+            state.home_page_info = null
+            state.selected=[]
+            state.amount=null
+            state.expirey_time=null
+            state.message=null
         }
 
     }
@@ -128,5 +135,5 @@ export const store = configureStore({
 export const persistor = persistStore(store);
 
 
-export const { addItem, addDetails, showDetails, loginUser, addUser, logoutUser, add_home_page_info,insert_selected,clear_selected,clear_all_selected,addTrain,add_access_token,add_refresh_token,clear_access_token,clear_refresh_token } = variableSlice.actions
+export const {  remove_after_purchasing_ticket,addItem, addDetails, showDetails, loginUser, addUser, logoutUser, add_home_page_info,insert_selected,clear_selected,clear_all_selected,addTrain,add_access_token,add_refresh_token,clear_access_token,clear_refresh_token } = variableSlice.actions
 

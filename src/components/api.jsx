@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { add_access_token, store } from './redux';
 
 const api = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api',
+    baseURL: 'https://railway-ticket-booking-back-5dang.kinsta.app/api',
     timeout: 5000,
 });
 

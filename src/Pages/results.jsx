@@ -7,7 +7,9 @@ import Result_train from '../components/result_train'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import { addTrain,store } from '../components/redux'
+import { addTrain, store } from '../components/redux'
+import Date_modifier from '../components/css_comp/Date_modifier'
+import api from '../components/api'
 
 
 export default function Results() {
@@ -21,28 +23,12 @@ export default function Results() {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const loginUser = useSelector((state) => state.var.logged)
-  const redx_selected=useSelector((state)=>state.var.selected)
-  const redx_seat_details=useSelector((state)=>state.var.seat_details)
-  const redx_total_amount=useSelector((state)=>state.var.amount)
-  const state=store.getState().var
+  const redx_selected = useSelector((state) => state.var.selected)
+  const redx_seat_details = useSelector((state) => state.var.seat_details)
+  const redx_total_amount = useSelector((state) => state.var.amount)
+  const state = store.getState().var
 
 
-  // useEffect(()=>{
-  //   const time=Date.now()/1000
-  //   if(time > state.expirey_time){
-  //     toast.warning('Session has expired redirecting to login')
-  //     setTimeout(() => {
-  //       navigate('/login',{
-  //         state:{
-  //           expirey_message:'Session has expired please login'
-  //         }});
-  //     }, 2000);
-     
-      
-  
-      
-  //   }
-  // })
 
   useEffect(() => {
 
@@ -54,14 +40,25 @@ export default function Results() {
         from: home_page_info?.from,
         to: home_page_info?.to
       }
-      await axios.post('http://127.0.0.1:8000/api/train_details', from_to)
+      await api.post('/train_details', from_to)
         .then((res) => {
-          const data = res.data.data
-          const { train_class_info, info } = making_train_data_from_api(data)
-          setTrain_Name_Class(train_class_info)
-          setAll_info(data)
+
+          if (res.status == 200) {
+            const data = res.data.data
+            console.log('data',data)
+            const { train_class_info, info } = making_train_data_from_api(data)
+            setTrain_Name_Class(train_class_info)
+            setAll_info(data)
+          }else{
+            console.log(res)
+            toast.error('No Train Found')
+          }
         })
+
+
+          
         .catch((error) => {
+
           toast.warning('Data Unavailable')
           setTrain_Name_Class({})
           setLoading(false)
@@ -78,11 +75,11 @@ export default function Results() {
   }, [home_page_info])
 
 
-  useEffect(()=>{
+  useEffect(() => {
 
     setSelected(redx_selected)
     setTotal_Amount(redx_total_amount)
-  },[])
+  }, [])
 
   const making_train_data_from_api = (data) => {
     // setLoading(true);
@@ -115,7 +112,7 @@ export default function Results() {
 
 
 
-    if ((loginUser).length>0 && selected[(selected.length) - 1].length > 2) {
+    if ((loginUser).length > 0 && selected[(selected.length) - 1].length > 2) {
 
       setSelected((prev) => {
 
@@ -128,14 +125,9 @@ export default function Results() {
       navigate('/passangerinfo')
 
     }else{
+      toast.error('You are not logged in')
       
-      toast.warning('PLease Login First')
-
-      setTimeout(() => {
-        navigate('/login')
-      }, 1500);
-    }
-   
+    } 
 
 
 
@@ -154,8 +146,8 @@ export default function Results() {
               </div>
               <div className='journey-info'>
 
-                <h3>Dhaka - Sylhet</h3>
-                <h4>27-September-2024 </h4>
+                <h3>{home_page_info.from} - {home_page_info.to}</h3>
+                <h4>{home_page_info.date}</h4>
 
               </div>
             </div>
@@ -226,7 +218,7 @@ export default function Results() {
                         {item[4] == 'AC Berth' ? (
                           <>
 
-                            <p>{item[4].slice(0, 4)}</p>
+                            <p>{item[4]?.slice(0, 4)}</p>
                             {/* <br /> */}
                             <p>-{item[1]}</p>
                           </>

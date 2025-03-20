@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { insert_selected, clear_selected, clear_all_selected } from './redux'
 import { toast, ToastContainer } from 'react-toastify'
 import axios from 'axios'
+import api from './api'
 
 
 export default function Seat_selection(props) {
@@ -30,7 +31,7 @@ export default function Seat_selection(props) {
 
   const get_booked_seat = async (compartment_id) => {
     setLoading(true)
-    await axios.get(`http://127.0.0.1:8000/api/get_booked_seat/${compartment_id}`)
+    await api.get(`/get_booked_seat/${compartment_id}`)
       .then((res) => {
 
         setTimeout(() => {
@@ -82,7 +83,7 @@ export default function Seat_selection(props) {
   const clear_all_selected_seats = () => {
     setSelected([])
     setSeat_Details([])
-    dispatch(clear_all_selected_seats())
+    dispatch(clear_all_selected())
     setTotal_Amount(0)
 
   }
@@ -91,7 +92,7 @@ export default function Seat_selection(props) {
 
 
   const handleBooked = (key, seatnumber) => {
-    const newBooked = selected.filter((item) => item[2] == key[2] && item[0] == key[0])
+    const newBooked = selected?.filter((item) => item[2] == key[2] && item[0] == key[0])
     if (newBooked.length < 1) {
 
       if (selected.length > 0) {
@@ -137,7 +138,7 @@ export default function Seat_selection(props) {
 
 
     } else {
-      const newBooked = selected.filter((item) => !(item[0] == key[0] && item[2] == key[2]))
+      const newBooked = selected?.filter((item) => !(item[0] == key[0] && item[2] == key[2]))
       setSelected(newBooked)
       setSeat_Details(newBooked)
       dispatch(clear_selected(key))
@@ -209,7 +210,7 @@ export default function Seat_selection(props) {
   }
   const Change_Compartment = (e) => {
     const key_value = e.target.value
-    const choosen_compartment = sortedCompartment.filter((item) => item.compartment_id == key_value)
+    const choosen_compartment = sortedCompartment?.filter((item) => item.compartment_id == key_value)
     setCurrentCompartment(choosen_compartment[0])
     setSelected_Compartment(choosen_compartment[0].compartment_id)
     get_booked_seat(choosen_compartment[0]?.compartment_id)
@@ -268,7 +269,7 @@ export default function Seat_selection(props) {
               
               <div>
 
-                <img src={horizontal_loading} alt="" width={90} height={50}  style={{color:'black'}} />
+                <img src={horizontal_loading} alt="" id='horizontal_loading'  />
 
               </div> :
 

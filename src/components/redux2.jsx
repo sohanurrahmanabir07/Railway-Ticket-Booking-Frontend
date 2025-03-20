@@ -14,7 +14,7 @@ const info={
             state.user.push(action.payload)
         },
         removeUser:(state,action)=>{
-            state.user=state.user.filter((item)=>item.id!=action.payload)
+            state.user=state.user?.filter((item)=>item.id!=action.payload)
         },
         updateUSer:(state,action)=>{
             const {id,name,age,contact}=action.payload

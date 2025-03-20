@@ -40,7 +40,7 @@ export default function Result_train(props) {
 
     const seat=(trainID,class_name)=>{
         const info=props.all_info
-        const filtered_info=info.filter((item)=>item.train_id==trainID && item.class_name==class_name)
+        const filtered_info=info?.filter((item)=>item.train_id==trainID && item.class_name==class_name)
         setFor_seat_selection(filtered_info)
 
 
@@ -97,8 +97,8 @@ export default function Result_train(props) {
                             if (index != 0) {
                                 
                                 const info=props.all_info
-                                let row=(info.filter((i)=>i.train_id==props.trainID_classDetails[0] && i.class_name==props.trainID_classDetails[index]))
-                                row=row.slice(0,1)[0]
+                                let row=(info?.filter((i)=>i.train_id==props.trainID_classDetails[0] && i.class_name==props.trainID_classDetails[index]))
+                                row=row?.slice(0,1)[0]
                                 const  class_name=props.trainID_classDetails[index]
                             
                                 return (

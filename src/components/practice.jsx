@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Seat_selection from './seat_selection'
 import './css_comp/trainsearching.css';
 import axios from 'axios';
+import api from './api';
 
 export default function Practice() {
     let [count, setCount] = useState(0)
@@ -35,7 +36,7 @@ export default function Practice() {
         e.preventDefault()
         if(pass.pass==pass.repass){
             info['password']=pass.pass
-            await axios.post('http://127.0.0.1:8000/api/add_user',info)
+            await api.post('/add_user',info)
             .then((res)=>{
                 console.log(res)
                 alert("submit")
